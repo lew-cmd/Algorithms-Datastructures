@@ -35,7 +35,7 @@ class RabinKarp:
         last_char = None
 
         for idx in range(self.textlen+1-self.patterlen):
-            seq = text[idx:idx + self.pat_len]
+            seq = text[idx:idx + self.patterlen]
             comp_hash = self.get_rolling_hash_value(seq, last_char, comp_hash)
             last_char = seq[0]
 
@@ -43,6 +43,7 @@ class RabinKarp:
                 if seq == pattern:
                     res_idx.append(idx)
 
+        print(res_idx)
         return res_idx
 
     def get_rolling_hash_value(self, sequence, last_character, previous_hash):
@@ -52,8 +53,11 @@ class RabinKarp:
         @ param lastCharacter - The character to be removed from the hash when a new character is added.
         @ param previousHash - The most recent hash value to be reused in the new hash value.
         @ return hash value for the given character sequence using base 29."""
-        # TODO
-        pass
+
+        if previous_hash == None or previous_hash == 0:
+            return self.get_hash(sequence)
+        else:
+            return previous_hash*29-ord(last_character)*29**self.patterlen + ord(sequence[self.patterlen-1])
 
     def get_hash(self, pattern: str):
         """calculating hash_value of string, either with or without modulo value"""
